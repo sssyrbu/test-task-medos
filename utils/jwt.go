@@ -4,11 +4,25 @@ import (
 	"os"
 	"time"
 
+	"test-task-medos/models"
+
 	"github.com/dgrijalva/jwt-go"
-	"github.com/sssyrbu/test-task-medos/models"
+	"github.com/joho/godotenv"
 )
 
-var jwtKey = os.Getenv("JWT_SECRET_KEY")
+var jwtKey []byte
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		panic("Error loading .env file")
+	}
+
+	jwtKey = []byte(os.Getenv("JWT_SECRET_KEY"))
+	if len(jwtKey) == 0 {
+		panic("JWT_SECRET_KEY не установлен")
+	}
+}
 
 func GenerateJWT(userID, ip string) (string, error) {
 	expirationTime := time.Now().Add(5 * time.Minute)

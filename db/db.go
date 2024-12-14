@@ -12,24 +12,20 @@ import (
 var db *sql.DB
 
 func InitializeDatabase() {
-	// todo: remove dev logging and pinging
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+	psqlCreds := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
+
 	var err error
-	db, err = sql.Open("postgres", psqlInfo)
+
+	db, err = sql.Open("postgres", psqlCreds)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	err = db.Ping()
-	if err != nil {
-		log.Fatalf("Failed to ping database: %v", err)
-	}
-	log.Println("Successfully connected to database")
 
 	_, err = db.Exec(`
 		create table if not exists refresh_tokens (

@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
+	"test-task-medos/db"
+	"test-task-medos/utils"
+
 	"github.com/gin-gonic/gin"
-	"github.com/sssyrbu/test-task-medos/db"
-	"github.com/sssyrbu/test-task-medos/utils"
 )
 
 func GenerateAccessAndRefreshTokens(c *gin.Context) {
@@ -13,6 +15,7 @@ func GenerateAccessAndRefreshTokens(c *gin.Context) {
 
 	accessToken, err := utils.GenerateJWT(userID, ip)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при генерации access токена"})
 		return
 	}

@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 
+	"test-task-medos/db"
+	"test-task-medos/handlers"
+
 	"github.com/gin-gonic/gin"
-	"github.com/sssyrbu/test-task-medos/db"
-	"github.com/sssyrbu/test-task-medos/handlers"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
 
 	r := gin.Default()
 
-	r.POST("/auth/token", handlers.GenerateToken)
+	r.POST("/auth/token", handlers.GenerateAccessAndRefreshTokens)
 	r.POST("/auth/refresh", handlers.RefreshToken)
 
 	log.Fatal(r.Run(":8888"))
